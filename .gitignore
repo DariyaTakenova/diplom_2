@@ -12,14 +12,18 @@ ENV/
 # Pytest кэш
 .pytest_cache/
 
-# Allure результаты
+# Allure результаты и отчёты
 allure-results/
 allure-report/
 
-# IDE
+# IDE и редакторы
 .vscode/
 .idea/
 
-# Системные файлы
+# Системные файлы Windows/macOS
 .DS_Store
 Thumbs.db
+
+# Логи и временные файлы
+*.log
+*.tmp
