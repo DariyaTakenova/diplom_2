@@ -1,0 +1,29 @@
+# Python кэш
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Виртуальное окружение
+.venv/
+venv/
+env/
+ENV/
+
+# Pytest кэш
+.pytest_cache/
+
+# Allure результаты и отчёты
+allure-results/
+allure-report/
+
+# IDE и редакторы
+.vscode/
+.idea/
+
+# Системные файлы Windows/macOS
+.DS_Store
+Thumbs.db
+
+# Логи и временные файлы
+*.log
+*.tmp
