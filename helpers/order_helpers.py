@@ -1,10 +1,18 @@
 import requests
-import allure
-from endpoints import ORDER
+from data import URLS
 
-def create_order(ingredients, token=None):
-    """Создаёт заказ через API и возвращает Response"""
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    with allure.step(f"Создание заказа с ингредиентами: {ingredients}"):
-        response = requests.post(ORDER, json={"ingredients": ingredients}, headers=headers)
-    return response
+
+def create_order(ingredients: list[str], token: str | None = None) -> requests.Response:
+
+    headers = {}
+    if token:
+        headers["Authorization"] = token
+
+    payload = {"ingredients": ingredients}
+
+    return requests.post(URLS["orders"], json=payload, headers=headers)
+
+
+def get_ingredients_list() -> requests.Response:
+
+    return requests.get(URLS["ingredients"])
