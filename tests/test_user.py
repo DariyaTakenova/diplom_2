@@ -1,27 +1,53 @@
 import pytest
 import allure
-from helpers.user_helpers import register_user, login_user
+from helpers.user_helpers import register_user
 from data import create_user
 
 
-@allure.feature("Пользователи")
+@allure.feature("Регистрация пользователя")
 class TestUsers:
 
-    @allure.title("Проверка обязательных полей при регистрации")
-    @pytest.mark.parametrize("missing_field", ["email", "password", "name"])
-    def test_create_user_missing_field(self, missing_field):
-        """
-        Попытка регистрации пользователя с пропущенным обязательным полем.
-        Каждый обязательный атрибут проверяется отдельно.
-        """
+    @allure.story("Регистрация без email")
+    @allure.title("Регистрация без email")
+    def test_create_user_without_email(self):
         user = create_user()
-        user.pop(missing_field)
+        user.pop("email")
 
-        with allure.step(f"Регистрация пользователя без поля: {missing_field}"):
+        with allure.step("Регистрация пользователя без email"):
             response = register_user(user)
 
-        with allure.step("Проверка кода ошибки и сообщения"):
-            assert response.status_code == 400
+        with allure.step("Проверка ошибки"):
+            assert response.status_code == 403, f"Неверный код: {response.text}"
             body = response.json()
-            assert "message" in body
-            assert missing_field in body["message"] or "required" in body["message"].lower()
+            assert body.get("success") is False
+            assert body.get("message") == "Email, password and name are required fields"
+
+    @allure.story("Регистрация без пароля")
+    @allure.title("Регистрация без password")
+    def test_create_user_without_password(self):
+        user = create_user()
+        user.pop("password")
+
+        with allure.step("Регистрация пользователя без password"):
+            response = register_user(user)
+
+        with allure.step("Проверка ошибки"):
+            assert response.status_code == 403, f"Неверный код: {response.text}"
+            body = response.json()
+            assert body.get("success") is False
+            assert body.get("message") == "Email, password and name are required fields"
+
+    @allure.story("Регистрация без имени")
+    @allure.title("Регистрация без name")
+    def test_create_user_without_name(self):
+        user = create_user()
+        user.pop("name")
+
+        with allure.step("Регистрация пользователя без name"):
+            response = register_user(user)
+
+        with allure.step("Проверка ошибки"):
+            assert response.status_code == 403, f"Неверный код: {response.text}"
+            body = response.json()
+            assert body.get("success") is False
+            assert body.get("message") == "Email, password and name are required fields"
